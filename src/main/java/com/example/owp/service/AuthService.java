@@ -14,10 +14,12 @@ import java.util.Optional;
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public User register(RegisterRequest request) {
@@ -34,7 +36,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public User login(LoginRequest request) {
+    public String login(LoginRequest request) {
         Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
         if (optionalUser.isEmpty()) {
             throw new RuntimeException("User not found");
@@ -49,7 +51,7 @@ public class AuthService {
             throw new RuntimeException("Wrong password");
         }
 
-        return user;
+        return jwtService.generateToken(user);
     }
 
 }
