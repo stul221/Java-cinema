@@ -2,6 +2,7 @@ package com.example.owp.service;
 
 import com.example.owp.dto.LoginRequest;
 import com.example.owp.dto.RegisterRequest;
+import com.example.owp.dto.UserResponse;
 import com.example.owp.model.Role;
 import com.example.owp.model.User;
 import com.example.owp.repository.UserRepository;
@@ -22,7 +23,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public User register(RegisterRequest request) {
+    public UserResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
@@ -32,8 +33,9 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
+        userRepository.save(user);
 
-        return userRepository.save(user);
+        return new UserResponse(user);
     }
 
     public String login(LoginRequest request) {
@@ -50,6 +52,9 @@ public class AuthService {
         )) {
             throw new RuntimeException("Wrong password");
         }
+
+        user.setCount(user.getCount() + 1);
+        userRepository.save(user);
 
         return jwtService.generateToken(user);
     }

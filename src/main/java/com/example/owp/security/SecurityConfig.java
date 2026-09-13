@@ -1,4 +1,4 @@
-package com.example.owp.сonfig;
+package com.example.owp.security;
 
 
 import org.springframework.context.annotation.Bean;
