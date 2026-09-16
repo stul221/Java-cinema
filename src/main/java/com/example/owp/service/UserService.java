@@ -1,9 +1,6 @@
 package com.example.owp.service;
 
-import com.example.owp.dto.RegisterRequest;
-import com.example.owp.dto.UpdatePasswordRequest;
-import com.example.owp.dto.UpdateUserRequest;
-import com.example.owp.dto.UserResponse;
+import com.example.owp.dto.*;
 import com.example.owp.model.User;
 import com.example.owp.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,10 +69,26 @@ public class UserService {
                 request.getOldPassword(),
                 user.getPassword()
         )) {
-            throw new RuntimeException("Wrong password");
+            throw new RuntimeException("Wrong old password");
         }
 
-        user.setPassword(request.getNewPassword());
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
+
+    public void updateRole(Integer id, UpdateRoleRequest request) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        User user = optionalUser.get();
+
+        if(user.getRole().name().equals(request.getRole().name())) {
+            throw new RuntimeException("The old and new roles should be different");
+        }
+
+        user.setRole(request.getRole());
+        userRepository.save(user);
+    }
+
 }

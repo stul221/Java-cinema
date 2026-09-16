@@ -1,9 +1,6 @@
 package com.example.owp.controller;
 
-import com.example.owp.dto.RegisterRequest;
-import com.example.owp.dto.UpdatePasswordRequest;
-import com.example.owp.dto.UpdateUserRequest;
-import com.example.owp.dto.UserResponse;
+import com.example.owp.dto.*;
 import com.example.owp.model.User;
 import com.example.owp.repository.UserRepository;
 import com.example.owp.service.UserService;
@@ -54,5 +51,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void updatePassword(@Valid @RequestBody UpdatePasswordRequest request) {
         userService.updatePassword(request);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}/updateRole")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateRole(@PathVariable Integer id, @RequestBody UpdateRoleRequest request) {
+        userService.updateRole(id,request);
     }
 }

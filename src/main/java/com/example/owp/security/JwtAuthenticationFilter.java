@@ -36,6 +36,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         String token = authorization.substring(7);
 
+        if (!jwtService.validateJwt(token)) {
+            filterChain.doFilter(request,response);
+            return;
+        }
+
         Claims claims = jwtService.parseJwt(token);
         int userId = claims.get("userId", Integer.class);
         String role = claims.get("role", String.class);
@@ -47,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         List.of(new SimpleGrantedAuthority("ROLE_" + role))
                 );
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        filterChain.doFilter(request, response);
     }
 
 }

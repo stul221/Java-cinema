@@ -21,7 +21,7 @@ public class JwtService {
     private static final Logger log = LoggerFactory.getLogger(JwtService.class);
     private final String key;
 
-    public JwtService(@Value("${JWT_SECRET}") String secret) {
+    public JwtService(@Value("${jwt.secret}") String secret) {
         this.key = secret;
     }
 
@@ -49,7 +49,7 @@ public class JwtService {
             Jwts.parser()
                     .verifyWith(getSingInKey())
                     .build()
-                    .parseEncryptedClaims(token);
+                    .parseSignedClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             log.warn("Invalid JWT token", e);
