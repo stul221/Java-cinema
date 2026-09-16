@@ -1,15 +1,18 @@
 package com.example.owp.controller;
 
+import com.example.owp.dto.RegisterRequest;
+import com.example.owp.dto.UpdatePasswordRequest;
+import com.example.owp.dto.UpdateUserRequest;
 import com.example.owp.dto.UserResponse;
 import com.example.owp.model.User;
 import com.example.owp.repository.UserRepository;
 import com.example.owp.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,4 +38,21 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @DeleteMapping("/me")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMyProfile() {
+        userService.deleteMyProfile();
+    }
+
+    @PutMapping("/me")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateMyProfile(@Valid @RequestBody UpdateUserRequest request) {
+        userService.updateMyProfile(request);
+    }
+
+    @PutMapping("/me/password")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePassword(@Valid @RequestBody UpdatePasswordRequest request) {
+        userService.updatePassword(request);
+    }
 }
