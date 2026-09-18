@@ -24,8 +24,7 @@ public class UserController {
     }
 
     @RequestMapping("/my")
-    public UserResponse getMy(@RequestHeader("Authorization") String authorization) {
-        String token = authorization.substring(7);
+    public UserResponse getMy() {
         return userService.getMyProfile(token);
     }
 
@@ -35,19 +34,19 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @DeleteMapping("/me")
+    @DeleteMapping("/my")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMyProfile() {
         userService.deleteMyProfile();
     }
 
-    @PutMapping("/me")
+    @PutMapping("/my")
     @ResponseStatus(HttpStatus.OK)
     public void updateMyProfile(@Valid @RequestBody UpdateUserRequest request) {
         userService.updateMyProfile(request);
     }
 
-    @PutMapping("/me/password")
+    @PutMapping("/my/password")
     @ResponseStatus(HttpStatus.OK)
     public void updatePassword(@Valid @RequestBody UpdatePasswordRequest request) {
         userService.updatePassword(request);
@@ -56,7 +55,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/updateRole")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateRole(@PathVariable Integer id, @RequestBody UpdateRoleRequest request) {
+    public void updateRole(@PathVariable Integer id, @Valid @RequestBody UpdateRoleRequest request) {
         userService.updateRole(id,request);
     }
 }

@@ -1,13 +1,14 @@
 package com.example.owp.repository;
 
+
 import com.example.owp.model.Booking;
+import com.example.owp.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface BookingRepository extends JpaRepository<Booking,Integer> {
-
-    List<Booking> findAllByUserId(Integer userId);
+public interface MovieRepository extends JpaRepository<Movie,Integer> {
+    Optional<Movie> findByTitle(String title);
 }

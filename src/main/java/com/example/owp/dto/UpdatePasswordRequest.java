@@ -20,4 +20,12 @@ public class UpdatePasswordRequest {
     public String getOldPassword() {
         return this.oldPassword;
     }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
 }

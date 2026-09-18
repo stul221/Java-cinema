@@ -24,9 +24,8 @@ public class UserService {
     }
 
     public UserResponse getMyProfile(String token) {
-        Optional<User> optionalUser = userRepository.findById(
-                jwtService.parseJwt(token).get("userId", Integer.class)
-        );
+        Integer id = (Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isEmpty()) {
             throw new RuntimeException("User not found");
         }
