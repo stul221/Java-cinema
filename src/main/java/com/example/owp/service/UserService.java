@@ -23,7 +23,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserResponse getMyProfile(String token) {
+    public UserResponse getMyProfile() {
         Integer id = (Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isEmpty()) {

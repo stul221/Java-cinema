@@ -25,7 +25,7 @@ public class UserController {
 
     @RequestMapping("/my")
     public UserResponse getMy() {
-        return userService.getMyProfile(token);
+        return userService.getMyProfile();
     }
 
     @PreAuthorize("hasRole('ADMIN')")

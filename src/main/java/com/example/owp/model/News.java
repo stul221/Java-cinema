@@ -15,7 +15,7 @@ public class News {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "image_url", nullable = false, length = 255)
+    @Column(name = "image_url", nullable = false, length = 500)
     private String image_url;
 
     @ManyToOne
